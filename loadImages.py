@@ -143,24 +143,40 @@ def expand_images_fitsize(ctnp, r1np, r2np, t1np, fa3e1np, fa3e2np, fa15e1np, fa
 
         print('balanced sampling...')
 	
-        for i in range(int(m1_f_low), int(m1_f_low + dimz)):
-            for j in range(int(m2_f_low), int(m2_f_low + dimx)):
-                for k in range(int(m3_f_low), int(m3_f_low + dimy)):
+        starttime = time.time()
 
-                    if mk_pad[i,j,k] ==1:
-                        list1_air.append(i);
-                        list2_air.append(j);
-                        list3_air.append(k);
+        z_bounds = slice(int(m1_f_low), int(m1_f_low + dimz))
+        x_bounds = slice(int(m2_f_low), int(m2_f_low + dimx))
+        y_bounds = slice(int(m3_f_low), int(m3_f_low + dimy))
+        air_indices = np.where((mk_pad[z_bounds, x_bounds, y_bounds] == 1))
+        list1_air = air_indices[0]+m1_f_low
+        list1_air = list1_air.tolist()
+        list2_air = air_indices[1]+m2_f_low
+        list2_air = list2_air.tolist()
+        list3_air = air_indices[2]+m3_f_low
+        list3_air = list3_air.tolist()
 
-                    if mk_pad[i,j,k] ==3:
-                        list1_brain.append(i);
-                        list2_brain.append(j);
-                        list3_brain.append(k);
+        # Brain
+        brain_indices = np.where((mk_pad[z_bounds, x_bounds, y_bounds] == 3))
+        list1_brain = brain_indices[0]+m1_f_low
+        list1_brain = list1_brain.tolist()
+        list2_brain = brain_indices[1]+m1_f_low
+        list2_brain = list2_brain.tolist()
+        list3_brain = brain_indices[2]+m1_f_low
+        list3_brain = list3_brain.tolist()
 
-                    if mk_pad[i,j,k] ==3:
-                        list1_bone.append(i);
-                        list2_bone.append(j);
-                        list3_bone.append(k);
+
+        # Bone
+        bone_indices = np.where((mk_pad[z_bounds, x_bounds, y_bounds] == 3))
+        list1_bone = bone_indices[0]+m1_f_low
+        list1_bone = list1_bone.tolist()
+        list2_bone = bone_indices[1]+m1_f_low
+        list2_bone = list2_bone.tolist()
+        list3_bone = bone_indices[2]+m1_f_low
+        list3_bone = list3_bone.tolist()
+        
+        print("sampling end")
+        print('Time of sampling %.2f'% (time.time()-starttime))     
     else:   
         index=0
 

@@ -178,34 +178,31 @@ def expand_images_fitsize(ctnp, r1np, r2np, t1np, fa3e1np, fa3e2np, fa15e1np, fa
         print("sampling end")
         print('Time of sampling %.2f'% (time.time()-starttime))     
     else:   
-        index=0
-
         print('random sampling...')
+        starttime = time.time()
+        i_bound = slice(int(m1_f_low), int(m1_f_low + dimz))
+        j_bound = slice(int(m2_f_low), int(m2_f_low + dimx))
+        k_bound = slice(int(m3_f_low), int(m3_f_low + dimy))
 
-        for i in range(int(m1_f_low), int(m1_f_low + dimz)):
-            for j in range(int(m2_f_low), int(m2_f_low + dimx)):
-                for k in range(int(m3_f_low), int(m3_f_low + dimy)):
+        indices = np.where((mk_pad[i_bound, j_bound, k_bound] > 0))
+        length = indices[1].shape[0]
+        index = np.arange(length)
+        air_indice = np.where(index%3==0)
+        list1_air = list(indices[0][air_indice]+int(m1_f_low))
+        list2_air = list(indices[1][air_indice]+int(m2_f_low))
+        list3_air = list(indices[2][air_indice]+int(m3_f_low))
 
-                    if mk_pad[i,j,k] >0:
-                        index_index = index%3
+        brain_indice = np.where(index%3==1)
+        list1_brain = list(indices[0][brain_indice]+int(m1_f_low))
+        list2_brain = list(indices[1][brain_indice]+int(m2_f_low))
+        list3_brain = list(indices[2][brain_indice]+int(m3_f_low))
 
-                        if index_index==0:
-                            list1_air.append(i);
-                            list2_air.append(j);
-                            list3_air.append(k);
-
-                        if index_index==1:
-                            list1_brain.append(i);
-                            list2_brain.append(j);
-                            list3_brain.append(k);
- 
-                        if index_index==2:
-                            list1_bone.append(i);
-                            list2_bone.append(j);
-                            list3_bone.append(k);
-
-                        index=index+1
-
+        bone_indice = np.where(index%3==2)
+        list1_bone = list(indices[0][bone_indice]+int(m1_f_low))
+        list2_bone = list(indices[1][bone_indice]+int(m2_f_low))
+        list3_bone = list(indices[2][bone_indice]+int(m3_f_low))
+        print('Time of sampling %.2f'% (time.time()-starttime))  
+        
     return ct_pad, r1_pad, r2_pad, t1_pad, fa3e1_pad, fa3e2_pad, fa15e1_pad, fa15e2_pad, dixon1_pad, dixon2_pad, mk_pad, list1_air, list2_air, list3_air, list1_brain, list2_brain, list3_brain, list1_bone, list2_bone, list3_bone
 
 

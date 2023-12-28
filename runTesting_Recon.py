@@ -78,7 +78,7 @@ def main():
     netG.eval()
 
     ###################################################
-    scan_files = ScanFile(opt.image_path, postfix='mk.nii.gz')
+    scan_files = ScanFile(opt.image_path, postfix='r1_mk.nii.gz')
     filenames_test = scan_files.scan_files()
 
     for filename in filenames_test:
@@ -86,7 +86,7 @@ def main():
         start_time = time.time();
 	
         file_mk = filename;
-        file_r1 = filename.replace('mk.nii.gz', 'r1.nii.gz')
+        file_r1 = filename.replace('r1_mk.nii.gz', 'r1.nii.gz')
         file_r2 = filename.replace('mk.nii.gz', 'r2.nii.gz')
         file_t1 = filename.replace('mk.nii.gz', 't1.nii.gz')
         file_fa3e1 = filename.replace('mk.nii.gz', 'fa3e1.nii.gz')
